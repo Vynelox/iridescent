@@ -126,11 +126,11 @@ Window {
                         property real dragStartMouseX: 0
                         property real dragStartWidth: 0
 
-                        onPressed: {
+                        onPressed: function(mouse) {
                             dragStartMouseX = vSplitterMouse.mapToItem(topRow, mouse.x, mouse.y).x
                             dragStartWidth = mediaPool.width
                         }
-                        onPositionChanged: {
+                        onPositionChanged: function(mouse) {
                             if (pressedButtons === Qt.LeftButton) {
                                 var currentX = vSplitterMouse.mapToItem(topRow, mouse.x, mouse.y).x
                                 var delta = currentX - dragStartMouseX
@@ -272,11 +272,11 @@ Window {
                 property real dragStartMouseY: 0
                 property real dragStartTopHeight: 0
 
-                onPressed: {
+                onPressed: function(mouse) {
                     dragStartMouseY = hSplitterMouse.mapToItem(root, mouse.x, mouse.y).y
                     dragStartTopHeight = topRow.height
                 }
-                onPositionChanged: {
+                onPositionChanged: function(mouse) {
                     if (pressedButtons === Qt.LeftButton) {
                         var currentY = hSplitterMouse.mapToItem(root, mouse.x, mouse.y).y
                         var delta = currentY - dragStartMouseY
@@ -450,6 +450,7 @@ Window {
 
                     // ── Tracks area with playhead ──
                     Rectangle {
+                        id: tracksArea
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         clip: true
@@ -509,7 +510,7 @@ Window {
                                     width: 2
                                     height: 24
                                     color: "#ff4444"
-                                    x: root.playheadPosition
+                                    x: mainWindow.playheadPosition
                                 }
                             }
 
@@ -541,7 +542,7 @@ Window {
                                     width: 2
                                     height: 64
                                     color: "#ff4444"
-                                    x: root.playheadPosition
+                                    x: mainWindow.playheadPosition
                                 }
                             }
 
@@ -573,7 +574,7 @@ Window {
                                     width: 2
                                     height: 64
                                     color: "#ff4444"
-                                    x: root.playheadPosition
+                                    x: mainWindow.playheadPosition
                                 }
                             }
                         }
@@ -583,7 +584,7 @@ Window {
                             id: playheadHandle
                             width: 16
                             height: ruler.height
-                            x: root.playheadPosition - 7
+                            x: mainWindow.playheadPosition - 7
                             y: 0
                             color: "transparent"
 
@@ -599,24 +600,45 @@ Window {
                             }
 
                             MouseArea {
+                                id: playheadMouseArea
                                 anchors.fill: parent
                                 anchors.leftMargin: -6
                                 anchors.rightMargin: -6
-                                cursorShape: Qt.SizeHorCursor
-                                property real dragStartX: 0
                                 property real dragStartPos: 0
 
-                                onPressed: {
-                                    dragStartX = mouseX
-                                    dragStartPos = root.playheadPosition
+                                onPressed: function(mouse) {
+                                    dragStartPos = mainWindow.playheadPosition
+                                    var globalX = playheadMouseArea.mapToItem(tracksArea, mouse.x, mouse.y).x
+                                    mainWindow.playheadPosition = Math.max(0, globalX)
                                 }
-                                onPositionChanged: {
+                                onPositionChanged: function(mouse) {
                                     if (pressedButtons === Qt.LeftButton) {
-                                        var delta = mouseX - dragStartX
-                                        var newPos = dragStartPos + delta
-                                        root.playheadPosition = Math.max(0, newPos)
+                                        var globalX = playheadMouseArea.mapToItem(tracksArea, mouse.x, mouse.y).x
+                                        mainWindow.playheadPosition = Math.max(0, globalX)
                                     }
                                 }
+                            }
+                        }
+
+                        // Timeline click/drag area (covers entire tracks area)
+                        MouseArea {
+                            anchors.fill: parent
+                            anchors.topMargin: ruler.height
+                            property bool isDragging: false
+
+                            onPressed: function(mouse) {
+                                isDragging = true
+                                var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x
+                                mainWindow.playheadPosition = Math.max(0, globalX)
+                            }
+                            onPositionChanged: function(mouse) {
+                                if (isDragging && pressedButtons === Qt.LeftButton) {
+                                    var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x
+                                    mainWindow.playheadPosition = Math.max(0, globalX)
+                                }
+                            }
+                            onReleased: function() {
+                                isDragging = false
                             }
                         }
                     }
