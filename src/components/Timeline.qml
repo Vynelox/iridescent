@@ -17,7 +17,6 @@ Rectangle {
         anchors.fill: parent
         anchors.margins: 0
 
-        // Header
         Rectangle {
             Layout.fillWidth: true
             height: 36
@@ -73,20 +72,17 @@ Rectangle {
             }
         }
 
-        // Separator
         Rectangle {
             Layout.fillWidth: true
             height: 1
             color: "#262830"
         }
 
-        // Tracks area
         RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
             spacing: 0
 
-            // Track labels
             Rectangle {
                 width: 60
                 Layout.fillHeight: true
@@ -108,37 +104,39 @@ Rectangle {
                         color: "#13141a"
 
                         RowLayout {
-                            anchors.fill: parent
-                            anchors.leftMargin: 8
-                            spacing: 4
+                            anchors.centerIn: parent
+                            spacing: 5
 
                             Text {
                                 text: "V1"
                                 color: "#38bdf8"
-                                font.pixelSize: 10
+                                font.pixelSize: 11
                                 font.bold: true
                                 font.family: "Inter, Segoe UI"
                             }
                             Rectangle {
-                                width: 14
-                                height: 12
+                                width: 20
+                                height: 18
                                 color: "transparent"
                                 Canvas {
                                     anchors.fill: parent
                                     onPaint: {
                                         var ctx = getContext("2d")
                                         ctx.strokeStyle = "#8b8fa8"
-                                        ctx.lineWidth = 1
-                                        ctx.strokeRect(1, 1, 8, 10)
-                                        ctx.fillRect(2, 0, 2, 2)
-                                        ctx.fillRect(2, 10, 2, 2)
-                                        ctx.fillRect(10, 0, 2, 2)
-                                        ctx.fillRect(10, 10, 2, 2)
-                                        ctx.strokeRect(3, 3, 4, 6)
+                                        ctx.lineWidth = 1.5
+                                        ctx.strokeRect(2, 3, 14, 12)
+                                        ctx.fillStyle = "#8b8fa8"
+                                        ctx.fillRect(5, 1, 3, 3)
+                                        ctx.fillRect(12, 1, 3, 3)
+                                        ctx.fillRect(5, 14, 3, 3)
+                                        ctx.fillRect(12, 14, 3, 3)
+                                        ctx.beginPath()
+                                        ctx.moveTo(2, 7)
+                                        ctx.lineTo(16, 7)
+                                        ctx.stroke()
                                     }
                                 }
                             }
-                            Rectangle { Layout.fillWidth: true }
                         }
                     }
 
@@ -148,53 +146,50 @@ Rectangle {
                         color: "#13141a"
 
                         RowLayout {
-                            anchors.fill: parent
-                            anchors.leftMargin: 8
-                            spacing: 4
+                            anchors.centerIn: parent
+                            spacing: 5
 
                             Text {
                                 text: "A1"
                                 color: "#34d399"
-                                font.pixelSize: 10
+                                font.pixelSize: 11
                                 font.bold: true
                                 font.family: "Inter, Segoe UI"
                             }
                             Rectangle {
-                                width: 14
-                                height: 12
+                                width: 20
+                                height: 18
                                 color: "transparent"
                                 Canvas {
                                     anchors.fill: parent
                                     onPaint: {
                                         var ctx = getContext("2d")
-                                        ctx.strokeStyle = "#8b8fa8"
                                         ctx.fillStyle = "#8b8fa8"
-                                        ctx.lineWidth = 1
+                                        ctx.strokeStyle = "#8b8fa8"
+                                        ctx.lineWidth = 1.5
                                         ctx.beginPath()
-                                        ctx.moveTo(1, 4)
-                                        ctx.lineTo(4, 4)
-                                        ctx.lineTo(7, 1)
-                                        ctx.lineTo(7, 11)
-                                        ctx.lineTo(4, 8)
-                                        ctx.lineTo(1, 8)
+                                        ctx.ellipse(4, 13, 4, 3, -0.3, 0, Math.PI * 2)
+                                        ctx.fill()
+                                        ctx.fillRect(7, 3, 1.5, 10)
+                                        ctx.beginPath()
+                                        ctx.ellipse(11, 10, 4, 3, -0.3, 0, Math.PI * 2)
+                                        ctx.fill()
+                                        ctx.fillRect(14, 2, 1.5, 8)
+                                        ctx.beginPath()
+                                        ctx.moveTo(8.5, 3)
+                                        ctx.lineTo(15.5, 2)
+                                        ctx.lineTo(15.5, 5)
+                                        ctx.lineTo(8.5, 6)
                                         ctx.closePath()
                                         ctx.fill()
-                                        ctx.beginPath()
-                                        ctx.arc(9, 6, 2, -0.5, 0.5)
-                                        ctx.stroke()
-                                        ctx.beginPath()
-                                        ctx.arc(9, 6, 4, -0.5, 0.5)
-                                        ctx.stroke()
                                     }
                                 }
                             }
-                            Rectangle { Layout.fillWidth: true }
                         }
                     }
                 }
             }
 
-            // Tracks content with playhead
             Rectangle {
                 id: tracksArea
                 Layout.fillWidth: true
@@ -206,7 +201,6 @@ Rectangle {
                     anchors.fill: parent
                     spacing: 1
 
-                    // Time ruler
                     Rectangle {
                         id: ruler
                         Layout.fillWidth: true
@@ -259,7 +253,6 @@ Rectangle {
                         }
                     }
 
-                    // Video track
                     Rectangle {
                         Layout.fillWidth: true
                         height: 56
@@ -290,7 +283,6 @@ Rectangle {
                         }
                     }
 
-                    // Audio track
                     Rectangle {
                         Layout.fillWidth: true
                         height: 56
@@ -322,7 +314,6 @@ Rectangle {
                     }
                 }
 
-                // Playhead handle
                 Rectangle {
                     id: playheadHandle
                     width: 14
@@ -362,7 +353,6 @@ Rectangle {
                     }
                 }
 
-                // Timeline click/drag area
                 MouseArea {
                     anchors.fill: parent
                     anchors.topMargin: ruler.height
