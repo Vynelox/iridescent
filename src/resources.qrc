@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>animatedbackground.qml</file>
+        <file>Editor.qml</file>
     </qresource>
 </RCC>
