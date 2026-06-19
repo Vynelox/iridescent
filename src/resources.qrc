@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>Editor.qml</file>
+        <file>components/MediaPool.qml</file>
+        <file>components/Viewer.qml</file>
+        <file>components/Timeline.qml</file>
     </qresource>
 </RCC>
