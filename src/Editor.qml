@@ -7,7 +7,7 @@ Window {
     width: 1280
     height: 720
     visible: true
-    title: "Iridescent Video Editor"
+    title: "Iridescent"
     color: "#1e1e1e"
 
     property int playheadPosition: 120
