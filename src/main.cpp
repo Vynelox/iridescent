@@ -1,15 +1,17 @@
-#include <QApplication>
-#include <QMainWindow>
-#include "squarewidget.h"
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QUrl>
+#include <QDir>
+#include <QObject>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
 #endif
 
-bool showTerminal = false;  // Set to false to suppress the terminal/console window
+bool showTerminal = true;
 
 int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
 
     if (!showTerminal) {
         #ifdef Q_OS_WIN
@@ -17,13 +19,20 @@ int main(int argc, char *argv[]) {
         #endif
     }
 
-    QMainWindow window;
-    window.setWindowTitle("Red Square Dragger");
+    QQmlApplicationEngine engine;
 
-    SquareWidget *squareWidget = new SquareWidget(&window);
-    window.setCentralWidget(squareWidget);
+    // TELL THE ENGINE WHERE TO FIND QT'S QML MODULES
+    engine.addImportPath("C:/Qt/6.11.1/msvc2022_64/qml");
 
-    window.showMaximized();
+    // Load QML directly from the source folder
+    QString qmlPath = QDir::currentPath() + "/../../../src/animatedbackground.qml";
+    const QUrl url = QUrl::fromLocalFile(qmlPath);
+    
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
+        &app, []() { QCoreApplication::exit(-1); },
+        Qt::QueuedConnection);
+        
+    engine.load(url);
 
     return app.exec();
 }
