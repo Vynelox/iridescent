@@ -9,28 +9,30 @@ Window {
     height: 720
     visible: true
     title: "Iridescent"
-    color: "#1e1e1e"
+    color: "#0c0d10"
 
     Rectangle {
         id: root
         anchors.fill: parent
-        color: "#1e1e1e"
+        color: "#0c0d10"
 
         Rectangle {
             id: topRow
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            height: parent.height * 0.6
-            color: "#1e1e1e"
+            height: parent.height * 0.62
+            color: "#0c0d10"
 
             MediaPool {
                 id: mediaPool
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
-                anchors.margins: 6
-                width: 280
+                anchors.topMargin: 4
+                anchors.bottomMargin: 4
+                anchors.leftMargin: 4
+                width: 260
             }
 
             Rectangle {
@@ -38,9 +40,16 @@ Window {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: mediaPool.right
-                anchors.leftMargin: 6
-                width: 5
-                color: "#333333"
+                width: 6
+                color: "#1a1c24"
+
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: 2
+                    height: 40
+                    radius: 1
+                    color: "#303340"
+                }
 
                 MouseArea {
                     id: vSplitterMouse
@@ -60,18 +69,10 @@ Window {
                             var currentX = vSplitterMouse.mapToItem(topRow, mouse.x, mouse.y).x
                             var delta = currentX - dragStartMouseX
                             var newWidth = dragStartWidth + delta
-                            newWidth = Math.max(180, Math.min(450, newWidth))
+                            newWidth = Math.max(160, Math.min(480, newWidth))
                             mediaPool.width = newWidth
                         }
                     }
-                }
-
-                Rectangle {
-                    anchors.centerIn: parent
-                    width: 2
-                    height: 30
-                    radius: 1
-                    color: "#555555"
                 }
             }
 
@@ -81,7 +82,10 @@ Window {
                 anchors.bottom: parent.bottom
                 anchors.left: vSplitter.right
                 anchors.right: parent.right
-                anchors.margins: 6
+                anchors.topMargin: 4
+                anchors.bottomMargin: 4
+                anchors.rightMargin: 4
+                anchors.leftMargin: 10
             }
         }
 
@@ -90,14 +94,22 @@ Window {
             anchors.top: topRow.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            height: 5
-            color: "#333333"
+            height: 6
+            color: "#1a1c24"
+
+            Rectangle {
+                anchors.centerIn: parent
+                width: 40
+                height: 2
+                radius: 1
+                color: "#303340"
+            }
 
             MouseArea {
                 id: hSplitterMouse
                 anchors.fill: parent
-                anchors.topMargin: -4
-                anchors.bottomMargin: -4
+                anchors.topMargin: -6
+                anchors.bottomMargin: -6
                 cursorShape: Qt.SizeVerCursor
                 property real dragStartMouseY: 0
                 property real dragStartTopHeight: 0
@@ -115,14 +127,6 @@ Window {
                         topRow.height = newHeight
                     }
                 }
-            }
-
-            Rectangle {
-                anchors.centerIn: parent
-                width: 30
-                height: 2
-                radius: 1
-                color: "#555555"
             }
         }
 

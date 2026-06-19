@@ -11,7 +11,7 @@ Rectangle {
     signal zoomIn()
     signal zoomOut()
 
-    color: "#1a1a1a"
+    color: "#0c0d10"
 
     ColumnLayout {
         anchors.fill: parent
@@ -20,20 +20,23 @@ Rectangle {
         // Header
         Rectangle {
             Layout.fillWidth: true
-            height: 32
-            color: "#252525"
+            height: 36
+            color: "#13141a"
+            radius: 0
 
             RowLayout {
                 anchors.fill: parent
                 anchors.leftMargin: 12
                 anchors.rightMargin: 12
-                spacing: 12
+                spacing: 10
 
                 Text {
                     text: "Timeline"
-                    color: "#cccccc"
-                    font.pixelSize: 12
-                    font.family: "Segoe UI"
+                    color: "#8b8fa8"
+                    font.pixelSize: 11
+                    font.family: "Inter, Segoe UI"
+                    font.bold: true
+                    font.letterSpacing: 0.8
                 }
 
                 Rectangle { Layout.fillWidth: true }
@@ -42,32 +45,39 @@ Rectangle {
                     text: "-"
                     flat: true
                     palette.button: "transparent"
-                    palette.buttonText: "#888888"
-                    font.pixelSize: 16
+                    palette.buttonText: "#4a4d5e"
+                    font.pixelSize: 14
                     onClicked: root.zoomOut()
                 }
                 RoundButton {
                     text: "+"
                     flat: true
                     palette.button: "transparent"
-                    palette.buttonText: "#888888"
-                    font.pixelSize: 16
+                    palette.buttonText: "#4a4d5e"
+                    font.pixelSize: 14
                     onClicked: root.zoomIn()
                 }
 
                 Rectangle {
                     width: 1
-                    height: 16
-                    color: "#444444"
+                    height: 14
+                    color: "#262830"
                 }
 
                 Text {
                     text: "00:00:00:00"
-                    color: "#aaaaaa"
-                    font.pixelSize: 12
-                    font.family: "Consolas, monospace"
+                    color: "#8b8fa8"
+                    font.pixelSize: 11
+                    font.family: "JetBrains Mono, Consolas, monospace"
                 }
             }
+        }
+
+        // Separator
+        Rectangle {
+            Layout.fillWidth: true
+            height: 1
+            color: "#262830"
         }
 
         // Tracks area
@@ -78,9 +88,10 @@ Rectangle {
 
             // Track labels
             Rectangle {
-                width: 120
+                width: 60
                 Layout.fillHeight: true
-                color: "#1e1e1e"
+                color: "#13141a"
+                radius: 0
 
                 ColumnLayout {
                     anchors.fill: parent
@@ -88,72 +99,96 @@ Rectangle {
                     Rectangle {
                         Layout.fillWidth: true
                         height: 24
-                        color: "#252525"
+                        color: "#1a1c24"
                     }
 
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        color: "#222222"
+                        color: "#13141a"
 
                         RowLayout {
                             anchors.fill: parent
                             anchors.leftMargin: 8
-                            spacing: 6
+                            spacing: 4
 
                             Text {
                                 text: "V1"
-                                color: "#4fc3f7"
-                                font.pixelSize: 11
+                                color: "#38bdf8"
+                                font.pixelSize: 10
                                 font.bold: true
-                                font.family: "Segoe UI"
+                                font.family: "Inter, Segoe UI"
                             }
-                            Text {
-                                text: "Video"
-                                color: "#999999"
-                                font.pixelSize: 11
-                                font.family: "Segoe UI"
+                            Rectangle {
+                                width: 14
+                                height: 12
+                                color: "transparent"
+                                Canvas {
+                                    anchors.fill: parent
+                                    onPaint: {
+                                        var ctx = getContext("2d")
+                                        ctx.strokeStyle = "#8b8fa8"
+                                        ctx.lineWidth = 1
+                                        ctx.strokeRect(1, 1, 8, 10)
+                                        ctx.fillRect(2, 0, 2, 2)
+                                        ctx.fillRect(2, 10, 2, 2)
+                                        ctx.fillRect(10, 0, 2, 2)
+                                        ctx.fillRect(10, 10, 2, 2)
+                                        ctx.strokeRect(3, 3, 4, 6)
+                                    }
+                                }
                             }
                             Rectangle { Layout.fillWidth: true }
-                            Rectangle {
-                                width: 8
-                                height: 8
-                                radius: 4
-                                color: "#4fc3f7"
-                            }
                         }
                     }
 
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        color: "#222222"
+                        color: "#13141a"
 
                         RowLayout {
                             anchors.fill: parent
                             anchors.leftMargin: 8
-                            spacing: 6
+                            spacing: 4
 
                             Text {
                                 text: "A1"
-                                color: "#81c784"
-                                font.pixelSize: 11
+                                color: "#34d399"
+                                font.pixelSize: 10
                                 font.bold: true
-                                font.family: "Segoe UI"
+                                font.family: "Inter, Segoe UI"
                             }
-                            Text {
-                                text: "Audio"
-                                color: "#999999"
-                                font.pixelSize: 11
-                                font.family: "Segoe UI"
+                            Rectangle {
+                                width: 14
+                                height: 12
+                                color: "transparent"
+                                Canvas {
+                                    anchors.fill: parent
+                                    onPaint: {
+                                        var ctx = getContext("2d")
+                                        ctx.strokeStyle = "#8b8fa8"
+                                        ctx.fillStyle = "#8b8fa8"
+                                        ctx.lineWidth = 1
+                                        ctx.beginPath()
+                                        ctx.moveTo(1, 4)
+                                        ctx.lineTo(4, 4)
+                                        ctx.lineTo(7, 1)
+                                        ctx.lineTo(7, 11)
+                                        ctx.lineTo(4, 8)
+                                        ctx.lineTo(1, 8)
+                                        ctx.closePath()
+                                        ctx.fill()
+                                        ctx.beginPath()
+                                        ctx.arc(9, 6, 2, -0.5, 0.5)
+                                        ctx.stroke()
+                                        ctx.beginPath()
+                                        ctx.arc(9, 6, 4, -0.5, 0.5)
+                                        ctx.stroke()
+                                    }
+                                }
                             }
                             Rectangle { Layout.fillWidth: true }
-                            Rectangle {
-                                width: 8
-                                height: 8
-                                radius: 4
-                                color: "#81c784"
-                            }
                         }
                     }
                 }
@@ -165,6 +200,7 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 clip: true
+                color: "#0c0d10"
 
                 ColumnLayout {
                     anchors.fill: parent
@@ -175,7 +211,7 @@ Rectangle {
                         id: ruler
                         Layout.fillWidth: true
                         height: 24
-                        color: "#2a2a2a"
+                        color: "#1a1c24"
 
                         RowLayout {
                             anchors.fill: parent
@@ -199,17 +235,17 @@ Rectangle {
                                             var s = totalSec % 60
                                             return String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0')
                                         }
-                                        color: "#666666"
-                                        font.pixelSize: 10
-                                        font.family: "Consolas, monospace"
+                                        color: "#4a4d5e"
+                                        font.pixelSize: 9
+                                        font.family: "JetBrains Mono, Consolas, monospace"
                                     }
 
                                     Rectangle {
                                         anchors.right: parent.right
                                         anchors.bottom: parent.bottom
                                         width: 1
-                                        height: 8
-                                        color: "#444444"
+                                        height: 6
+                                        color: "#262830"
                                     }
                                 }
                             }
@@ -218,7 +254,7 @@ Rectangle {
                         Rectangle {
                             width: 2
                             height: 24
-                            color: "#ff4444"
+                            color: "#f87171"
                             x: root.playheadPosition
                         }
                     }
@@ -226,30 +262,30 @@ Rectangle {
                     // Video track
                     Rectangle {
                         Layout.fillWidth: true
-                        height: 64
-                        color: "#181818"
+                        height: 56
+                        color: "#0c0d10"
 
                         Rectangle {
                             anchors.fill: parent
-                            anchors.margins: 4
+                            anchors.margins: 3
                             color: "transparent"
-                            border.color: "#2a2a2a"
+                            border.color: "#1a1c24"
                             border.width: 1
-                            radius: 2
+                            radius: 3
 
                             Text {
                                 anchors.centerIn: parent
                                 text: "Drag video clips here"
-                                color: "#444444"
-                                font.pixelSize: 11
-                                font.family: "Segoe UI"
+                                color: "#303340"
+                                font.pixelSize: 10
+                                font.family: "Inter, Segoe UI"
                             }
                         }
 
                         Rectangle {
                             width: 2
-                            height: 64
-                            color: "#ff4444"
+                            height: 56
+                            color: "#f87171"
                             x: root.playheadPosition
                         }
                     }
@@ -257,30 +293,30 @@ Rectangle {
                     // Audio track
                     Rectangle {
                         Layout.fillWidth: true
-                        height: 64
-                        color: "#181818"
+                        height: 56
+                        color: "#0c0d10"
 
                         Rectangle {
                             anchors.fill: parent
-                            anchors.margins: 4
+                            anchors.margins: 3
                             color: "transparent"
-                            border.color: "#2a2a2a"
+                            border.color: "#1a1c24"
                             border.width: 1
-                            radius: 2
+                            radius: 3
 
                             Text {
                                 anchors.centerIn: parent
                                 text: "Drag audio clips here"
-                                color: "#444444"
-                                font.pixelSize: 11
-                                font.family: "Segoe UI"
+                                color: "#303340"
+                                font.pixelSize: 10
+                                font.family: "Inter, Segoe UI"
                             }
                         }
 
                         Rectangle {
                             width: 2
-                            height: 64
-                            color: "#ff4444"
+                            height: 56
+                            color: "#f87171"
                             x: root.playheadPosition
                         }
                     }
@@ -289,18 +325,18 @@ Rectangle {
                 // Playhead handle
                 Rectangle {
                     id: playheadHandle
-                    width: 16
+                    width: 14
                     height: ruler.height
-                    x: root.playheadPosition - 7
+                    x: root.playheadPosition - 6
                     y: 0
                     color: "transparent"
 
                     Rectangle {
                         anchors.top: parent.top
                         anchors.horizontalCenter: parent.horizontalCenter
-                        width: 12
-                        height: 12
-                        color: "#ff4444"
+                        width: 10
+                        height: 10
+                        color: "#f87171"
                         rotation: 45
                         transformOrigin: Item.Center
                     }

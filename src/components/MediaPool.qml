@@ -7,27 +7,30 @@ Rectangle {
 
     signal mediaSelected(string filePath)
 
-    color: "#222222"
-    radius: 6
+    color: "#13141a"
+    radius: 0
 
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: 0
 
+        // Header
         Rectangle {
             Layout.fillWidth: true
-            height: 32
-            color: "#2a2a2a"
-            radius: 4
+            height: 36
+            color: "#13141a"
+            radius: 0
 
             Text {
                 anchors.left: parent.left
                 anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
                 text: "Media Pool"
-                color: "#cccccc"
-                font.pixelSize: 12
-                font.family: "Segoe UI"
+                color: "#8b8fa8"
+                font.pixelSize: 11
+                font.family: "Inter, Segoe UI"
+                font.bold: true
+                font.letterSpacing: 0.8
             }
 
             Text {
@@ -35,12 +38,20 @@ Rectangle {
                 anchors.rightMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
                 text: "0 items"
-                color: "#777777"
-                font.pixelSize: 11
-                font.family: "Segoe UI"
+                color: "#4a4d5e"
+                font.pixelSize: 10
+                font.family: "Inter, Segoe UI"
             }
         }
 
+        // Separator
+        Rectangle {
+            Layout.fillWidth: true
+            height: 1
+            color: "#262830"
+        }
+
+        // Content
         ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -49,33 +60,43 @@ Rectangle {
 
             ColumnLayout {
                 width: root.width - 8
-                anchors.margins: 4
+                anchors.margins: 6
                 spacing: 4
 
                 Item {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
-                    Text {
-                        anchors.centerIn: parent
-                        text: "Import media to get started"
-                        color: "#555555"
-                        font.pixelSize: 12
-                        font.family: "Segoe UI"
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.topMargin: 8
+                        color: "#13141a"
+                        border.color: "#303340"
+                        border.width: 1
+                        radius: 4
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: "Drop media here or click to import"
+                            color: "#4a4d5e"
+                            font.pixelSize: 11
+                            font.family: "Inter, Segoe UI"
+                        }
                     }
                 }
             }
         }
 
+        // Import button
         Button {
             Layout.fillWidth: true
             Layout.margins: 6
             text: "+ Import Media"
             flat: true
-            palette.button: "#2e4a62"
-            palette.buttonText: "#4fc3f7"
-            font.pixelSize: 12
-            font.family: "Segoe UI"
+            palette.button: "#1a1c24"
+            palette.buttonText: "#38bdf8"
+            font.pixelSize: 11
+            font.family: "Inter, Segoe UI"
         }
     }
 }
