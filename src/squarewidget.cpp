@@ -4,8 +4,7 @@
 
 SquareWidget::SquareWidget(QWidget *parent)
     : QWidget(parent), isDragging(false) {
-    setFixedSize(400, 300);
-    squareRect = QRect(150, 100, 100, 100);
+    squareRect = QRect(100, 100, 100, 100);
 }
 
 void SquareWidget::paintEvent(QPaintEvent *event) {
@@ -16,8 +15,13 @@ void SquareWidget::paintEvent(QPaintEvent *event) {
     // Fill background with white
     painter.fillRect(rect(), Qt::white);
     
-    // Draw blue square
-    painter.fillRect(squareRect, Qt::blue);
+    // Draw green square
+    painter.fillRect(squareRect, Qt::green);
+
+    // Draw "Hello World" text in top-left corner
+    painter.setPen(Qt::black);
+    painter.setFont(QFont("Arial", 16));
+    painter.drawText(QPoint(10, 25), "Hello World");
 }
 
 void SquareWidget::mousePressEvent(QMouseEvent *event) {
@@ -39,5 +43,18 @@ void SquareWidget::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton && isDragging) {
         isDragging = false;
         unsetCursor();
+    }
+}
+
+void SquareWidget::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_F1) {
+        QWidget *parentWin = window();
+        if (parentWin) {
+            if (parentWin->isFullScreen()) {
+                parentWin->showMaximized();
+            } else {
+                parentWin->showFullScreen();
+            }
+        }
     }
 }

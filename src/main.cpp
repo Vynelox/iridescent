@@ -6,7 +6,7 @@
 #include <windows.h>
 #endif
 
-bool showTerminal = true;  // Set to false to suppress the terminal/console window
+bool showTerminal = false;  // Set to false to suppress the terminal/console window
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     SquareWidget *squareWidget = new SquareWidget(&window);
     window.setCentralWidget(squareWidget);
 
-    window.show();
+    window.showMaximized();
 
     return app.exec();
 }
