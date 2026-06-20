@@ -89,25 +89,25 @@ Rectangle {
                 color: "#13141a"
                 radius: 0
 
+                Rectangle {
+                    id: sidebarRuler
+                    width: parent.width
+                    height: 24
+                    color: "#1a1c24"
+                    anchors.top: parent.top
+                }
+
                 Item {
                     id: labelsContainer
                     width: parent.width
-                    height: 24 + 56 + 56
+                    height: 56 + 56
                     anchors.centerIn: parent
-
-                    Rectangle {
-                        width: parent.width
-                        height: 24
-                        color: "#1a1c24"
-                        anchors.top: parent.top
-                    }
 
                     Rectangle {
                         width: parent.width
                         height: 56
                         color: "#13141a"
                         anchors.top: parent.top
-                        anchors.topMargin: 24
 
                         RowLayout {
                             anchors.centerIn: parent
@@ -151,7 +151,7 @@ Rectangle {
                         height: 56
                         color: "#13141a"
                         anchors.top: parent.top
-                        anchors.topMargin: 80
+                        anchors.topMargin: 56
 
                         RowLayout {
                             anchors.centerIn: parent
