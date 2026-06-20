@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "components"
 
-ApplicationWindow {
+Window {
     id: mainWindow
     width: 1280
     height: 720
@@ -17,19 +17,8 @@ ApplicationWindow {
     // Settings { id: settings }
     // Theme { id: theme }
 
-    menuBar: MenuBar {
-        Menu {
-            title: "File"
-            MenuItem {
-                text: "Styles"
-                onTriggered: styleModalLoader.active = true
-            }
-            MenuItem {
-                text: "Settings"
-                onTriggered: settingsLoader.active = true
-            }
-        }
-    }
+    function activateStylesModal() { styleModalLoader.active = true; }
+    function activateSettingsModal() { settingsLoader.active = true; }
 
     Rectangle {
         id: root

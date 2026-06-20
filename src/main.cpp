@@ -8,6 +8,13 @@
 #include <QQmlContext>
 #include <QFile>
 #include <QIcon>
+#include <QWindow>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <dwmapi.h>
+#include "cpp/Win32EventFilter.h"
+#endif
 
 #include "cpp/Types.h"
 #include "cpp/Track.h"
@@ -70,6 +77,41 @@ int main(int argc, char *argv[]) {
     engine.load(url);
     
     qDebug() << "Root objects count:" << engine.rootObjects().size();
+
+    // Apply dark title bar and native menu bar on Windows
+#ifdef Q_OS_WIN
+    Win32EventFilter *win32Filter = nullptr;
+    if (engine.rootObjects().size() > 0) {
+        QWindow *window = qobject_cast<QWindow*>(engine.rootObjects().first());
+        if (window) {
+            HWND hwnd = reinterpret_cast<HWND>(window->winId());
+            BOOL dark = TRUE;
+            DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, &dark, sizeof(dark));
+
+            // Create native menu bar
+            HMENU hMenu = CreateMenu();
+            HMENU hFileMenu = CreatePopupMenu();
+            AppendMenuW(hFileMenu, MF_STRING, 1001, L"Styles");
+            AppendMenuW(hFileMenu, MF_STRING, 1002, L"Settings");
+            AppendMenuW(hMenu, MF_POPUP, (UINT_PTR)hFileMenu, L"File");
+            SetMenu(hwnd, hMenu);
+
+            // Install native event filter for menu commands
+            win32Filter = new Win32EventFilter();
+            app.installNativeEventFilter(win32Filter);
+
+            // Get the root QML object to trigger modals
+            QObject *rootObject = engine.rootObjects().first();
+
+            QObject::connect(win32Filter, &Win32EventFilter::stylesRequested, rootObject, [rootObject]() {
+                QMetaObject::invokeMethod(rootObject, "activateStylesModal");
+            });
+            QObject::connect(win32Filter, &Win32EventFilter::settingsRequested, rootObject, [rootObject]() {
+                QMetaObject::invokeMethod(rootObject, "activateSettingsModal");
+            });
+        }
+    }
+#endif
 
     return app.exec();
 }

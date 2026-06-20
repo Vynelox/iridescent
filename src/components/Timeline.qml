@@ -267,6 +267,7 @@ Rectangle {
                     anchors.topMargin: ruler.height
                     onPaint: {
                         var ctx = getContext("2d")
+                        ctx.clearRect(0, 0, width, height)
                         ctx.strokeStyle = "#1a1c24"
                         ctx.lineWidth = 1
 
