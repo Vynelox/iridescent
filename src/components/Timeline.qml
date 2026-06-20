@@ -199,7 +199,7 @@ Rectangle {
 
                 ColumnLayout {
                     anchors.fill: parent
-                    spacing: 1
+                    spacing: 0
 
                     Rectangle {
                         id: ruler
@@ -245,11 +245,34 @@ Rectangle {
                             }
                         }
 
-                        Rectangle {
-                            width: 2
-                            height: 24
-                            color: "#f87171"
-                            x: root.playheadPosition
+                    }
+
+                    Rectangle {
+                        Layout.fillWidth: true
+                        height: 56
+                        color: "#0c0d10"
+
+                        Canvas {
+                            anchors.fill: parent
+                            anchors.margins: 3
+                            onPaint: {
+                                var ctx = getContext("2d")
+                                ctx.strokeStyle = "#1a1c24"
+                                ctx.lineWidth = 1
+                                var step = 20
+                                for (var x = 0; x < width; x += step) {
+                                    ctx.beginPath()
+                                    ctx.moveTo(x, 0)
+                                    ctx.lineTo(x, height)
+                                    ctx.stroke()
+                                }
+                                for (var y = 0; y < height; y += step) {
+                                    ctx.beginPath()
+                                    ctx.moveTo(0, y)
+                                    ctx.lineTo(width, y)
+                                    ctx.stroke()
+                                }
+                            }
                         }
                     }
 
@@ -258,66 +281,66 @@ Rectangle {
                         height: 56
                         color: "#0c0d10"
 
-                        Rectangle {
+                        Canvas {
                             anchors.fill: parent
                             anchors.margins: 3
-                            color: "transparent"
-                            border.color: "#1a1c24"
-                            border.width: 1
-                            radius: 3
-
-                            Text {
-                                anchors.centerIn: parent
-                                text: "Drag video clips here"
-                                color: "#303340"
-                                font.pixelSize: 10
-                                font.family: "Inter, Segoe UI"
+                            onPaint: {
+                                var ctx = getContext("2d")
+                                ctx.strokeStyle = "#1a1c24"
+                                ctx.lineWidth = 1
+                                var step = 20
+                                for (var x = 0; x < width; x += step) {
+                                    ctx.beginPath()
+                                    ctx.moveTo(x, 0)
+                                    ctx.lineTo(x, height)
+                                    ctx.stroke()
+                                }
+                                for (var y = 0; y < height; y += step) {
+                                    ctx.beginPath()
+                                    ctx.moveTo(0, y)
+                                    ctx.lineTo(width, y)
+                                    ctx.stroke()
+                                }
                             }
                         }
+                    }
+                }
 
-                        Rectangle {
-                            width: 2
-                            height: 56
-                            color: "#f87171"
-                            x: root.playheadPosition
+                MouseArea {
+                    anchors.fill: parent
+                    anchors.topMargin: ruler.height
+                    property bool isDragging: false
+
+                    onPressed: function(mouse) {
+                        isDragging = true
+                        var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x
+                        root.playheadPosition = Math.max(0, globalX)
+                        root.playheadMoved(root.playheadPosition)
+                    }
+                    onPositionChanged: function(mouse) {
+                        if (isDragging && pressedButtons === Qt.LeftButton) {
+                            var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x
+                            root.playheadPosition = Math.max(0, globalX)
+                            root.playheadMoved(root.playheadPosition)
                         }
                     }
-
-                    Rectangle {
-                        Layout.fillWidth: true
-                        height: 56
-                        color: "#0c0d10"
-
-                        Rectangle {
-                            anchors.fill: parent
-                            anchors.margins: 3
-                            color: "transparent"
-                            border.color: "#1a1c24"
-                            border.width: 1
-                            radius: 3
-
-                            Text {
-                                anchors.centerIn: parent
-                                text: "Drag audio clips here"
-                                color: "#303340"
-                                font.pixelSize: 10
-                                font.family: "Inter, Segoe UI"
-                            }
-                        }
-
-                        Rectangle {
-                            width: 2
-                            height: 56
-                            color: "#f87171"
-                            x: root.playheadPosition
-                        }
+                    onReleased: function() {
+                        isDragging = false
                     }
+                }
+
+                Rectangle {
+                    id: playheadLine
+                    width: 2
+                    height: tracksArea.height
+                    color: "#f87171"
+                    x: root.playheadPosition
                 }
 
                 Rectangle {
                     id: playheadHandle
                     width: 14
-                    height: ruler.height
+                    height: tracksArea.height
                     x: root.playheadPosition - 6
                     y: 0
                     color: "transparent"
@@ -350,29 +373,6 @@ Rectangle {
                                 root.playheadMoved(root.playheadPosition)
                             }
                         }
-                    }
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    anchors.topMargin: ruler.height
-                    property bool isDragging: false
-
-                    onPressed: function(mouse) {
-                        isDragging = true
-                        var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x
-                        root.playheadPosition = Math.max(0, globalX)
-                        root.playheadMoved(root.playheadPosition)
-                    }
-                    onPositionChanged: function(mouse) {
-                        if (isDragging && pressedButtons === Qt.LeftButton) {
-                            var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x
-                            root.playheadPosition = Math.max(0, globalX)
-                            root.playheadMoved(root.playheadPosition)
-                        }
-                    }
-                    onReleased: function() {
-                        isDragging = false
                     }
                 }
             }
