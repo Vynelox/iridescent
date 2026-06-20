@@ -205,63 +205,63 @@ Rectangle {
                 clip: true
                 color: "#0c0d10"
 
-                Item {
-                    id: tracksContainer
+                Rectangle {
+                    id: ruler
                     width: parent.width
-                    height: ruler.height + 56 + 56
-                    anchors.centerIn: parent
+                    height: 24
+                    color: "#1a1c24"
+                    anchors.top: parent.top
 
-                    Rectangle {
-                        id: ruler
-                        width: parent.width
-                        height: 24
-                        color: "#1a1c24"
-                        anchors.top: parent.top
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.leftMargin: 4
+                        spacing: 0
 
-                        RowLayout {
-                            anchors.fill: parent
-                            anchors.leftMargin: 4
-                            spacing: 0
+                        Repeater {
+                            model: 50
+                            delegate: Rectangle {
+                                width: 80
+                                height: 24
+                                color: "transparent"
 
-                            Repeater {
-                                model: 50
-                                delegate: Rectangle {
-                                    width: 80
-                                    height: 24
-                                    color: "transparent"
-
-                                    Text {
-                                        anchors.left: parent.left
-                                        anchors.bottom: parent.bottom
-                                        anchors.bottomMargin: 4
-                                        text: {
-                                            var totalSec = index * 2
-                                            var m = Math.floor(totalSec / 60)
-                                            var s = totalSec % 60
-                                            return String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0')
-                                        }
-                                        color: "#4a4d5e"
-                                        font.pixelSize: 9
-                                        font.family: "JetBrains Mono, Consolas, monospace"
+                                Text {
+                                    anchors.left: parent.left
+                                    anchors.bottom: parent.bottom
+                                    anchors.bottomMargin: 4
+                                    text: {
+                                        var totalSec = index * 2
+                                        var m = Math.floor(totalSec / 60)
+                                        var s = totalSec % 60
+                                        return String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0')
                                     }
+                                    color: "#4a4d5e"
+                                    font.pixelSize: 9
+                                    font.family: "JetBrains Mono, Consolas, monospace"
+                                }
 
-                                    Rectangle {
-                                        anchors.right: parent.right
-                                        anchors.bottom: parent.bottom
-                                        width: 1
-                                        height: 6
-                                        color: "#262830"
-                                    }
+                                Rectangle {
+                                    anchors.right: parent.right
+                                    anchors.bottom: parent.bottom
+                                    width: 1
+                                    height: 6
+                                    color: "#262830"
                                 }
                             }
                         }
                     }
+                }
+
+                Item {
+                    id: tracksContainer
+                    width: parent.width
+                    height: 56 + 56
+                    anchors.centerIn: parent
 
                     Rectangle {
                         width: parent.width
                         height: 56
                         color: "#0c0d10"
-                        anchors.top: ruler.bottom
+                        anchors.top: parent.top
 
                         Canvas {
                             anchors.fill: parent
@@ -291,7 +291,7 @@ Rectangle {
                         width: parent.width
                         height: 56
                         color: "#0c0d10"
-                        anchors.top: ruler.bottom
+                        anchors.top: parent.top
                         anchors.topMargin: 56
 
                         Canvas {
@@ -321,6 +321,7 @@ Rectangle {
 
                 MouseArea {
                     anchors.fill: parent
+                    anchors.topMargin: ruler.height
                     property bool isDragging: false
 
                     onPressed: function(mouse) {
@@ -344,18 +345,17 @@ Rectangle {
                 Rectangle {
                     id: playheadLine
                     width: 2
-                    height: tracksContainer.height
+                    height: tracksArea.height
                     color: "#f87171"
                     x: root.playheadPosition
-                    y: tracksContainer.y
                 }
 
                 Rectangle {
                     id: playheadHandle
                     width: 14
-                    height: tracksContainer.height
+                    height: tracksArea.height
                     x: root.playheadPosition - 6
-                    y: tracksContainer.y
+                    y: 0
                     color: "transparent"
 
                     Rectangle {
