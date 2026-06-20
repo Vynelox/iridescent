@@ -1,8 +1,21 @@
 <RCC>
     <qresource prefix="/">
         <file>Editor.qml</file>
+        <file>components/Styles.qml</file>
         <file>components/MediaPool.qml</file>
         <file>components/Viewer.qml</file>
         <file>components/Timeline.qml</file>
+        <file>components/FormulaPlayneedle.qml</file>
+        <file>components/ColorPicker.qml</file>
+        <file>components/Settings.qml</file>
+        <file>components/Adjustables.qml</file>
+        <file>components/KeybindChip.qml</file>
+        <file>components/StylesModal.qml</file>
+        <file>components/TorusMenu.qml</file>
+        <file>components/TorusMenuEditor.qml</file>
+        <file>components/DraggableModal.qml</file>
+        <file>components/Waveform.qml</file>
+        <file>components/ThumbnailRoll.qml</file>
+        <file>components/RollDialog.qml</file>
     </qresource>
 </RCC>

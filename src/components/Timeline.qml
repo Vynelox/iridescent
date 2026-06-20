@@ -8,6 +8,10 @@ Rectangle {
     property int playheadPosition: 120
     property real contentX: 0
 
+    onContentXChanged: {
+        gridCanvas.requestPaint()
+    }
+
     signal playheadMoved(int position)
     signal zoomIn()
     signal zoomOut()
@@ -261,7 +265,6 @@ Rectangle {
                     id: gridCanvas
                     anchors.fill: parent
                     anchors.topMargin: ruler.height
-                    x: root.contentX
                     onPaint: {
                         var ctx = getContext("2d")
                         ctx.strokeStyle = "#1a1c24"
@@ -291,7 +294,8 @@ Rectangle {
 
                         var tickSpacing = 80
                         var gridOffset = 4
-                        for (var tx = gridOffset; tx < width; tx += tickSpacing) {
+                        var startX = root.contentX + gridOffset
+                        for (var tx = startX; tx < width; tx += tickSpacing) {
                             ctx.beginPath()
                             ctx.moveTo(tx, 0)
                             ctx.lineTo(tx, height)
