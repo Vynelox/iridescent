@@ -16,6 +16,20 @@ Rectangle {
     property bool logScale: false
     color: "transparent"
     
+    // Map slider 0-1000 to min-max range
+    function sliderToValue(sliderVal) {
+        var t = sliderVal / 1000.0;
+        return root.min + t * (root.max - root.min);
+    }
+    
+    function valueToSlider(val) {
+        return ((val - root.min) / (root.max - root.min)) * 1000.0;
+    }
+    
+    onValueChanged: {
+        slider.value = valueToSlider(root.value);
+    }
+    
     ColumnLayout {
         width: parent ? parent.width : 300
         spacing: 6
@@ -34,11 +48,15 @@ Rectangle {
         }
         
         Slider {
+            id: slider
             Layout.fillWidth: true
             from: 0; to: 1000; stepSize: 1
-            value: 0
+            value: valueToSlider(root.value)
             onMoved: {
-                if (root.onChange) root.onChange(value)
+                var newVal = sliderToValue(value);
+                newVal = Math.round(newVal / root.step) * root.step;
+                newVal = Math.max(root.min, Math.min(root.max, newVal));
+                if (root.onChange) root.onChange(newVal);
             }
         }
         

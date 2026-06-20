@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "components"
 
-Window {
+ApplicationWindow {
     id: mainWindow
     width: 1280
     height: 720
@@ -14,61 +14,32 @@ Window {
     color: "#0c0d10"
 
     // ─── C++ Singletons ───
-    // AppState { id: appState }
     // Settings { id: settings }
     // Theme { id: theme }
+
+    menuBar: MenuBar {
+        Menu {
+            title: "File"
+            MenuItem {
+                text: "Styles"
+                onTriggered: styleModalLoader.active = true
+            }
+            MenuItem {
+                text: "Settings"
+                onTriggered: settingsLoader.active = true
+            }
+        }
+    }
 
     Rectangle {
         id: root
         anchors.fill: parent
         color: "#0c0d10"
 
-        // ─── Header ───
-        Rectangle {
-            id: header
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: 44
-            color: "#13141a"
-            border.color: "#262830"
-            border.width: 1
-
-            RowLayout {
-                anchors.fill: parent
-                anchors.leftMargin: 12
-                anchors.rightMargin: 12
-                spacing: 10
-
-                Text {
-                    text: "Iridescent"
-                    color: "#e8eaf0"
-                    font.pixelSize: 15
-                    font.bold: true
-                }
-
-                Rectangle { Layout.fillWidth: true }
-
-                ToolButton {
-                    text: "🎨"
-                    flat: true
-                    palette.buttonText: "#8b8fa8"
-                    onClicked: styleModalLoader.active = true
-                }
-
-                ToolButton {
-                    text: "⚙"
-                    flat: true
-                    palette.buttonText: "#8b8fa8"
-                    onClicked: settingsLoader.active = true
-                }
-            }
-        }
-
         // ─── Workspace ───
         Rectangle {
             id: workspace
-            anchors.top: header.bottom
+            anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom

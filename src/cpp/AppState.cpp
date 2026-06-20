@@ -98,3 +98,21 @@ void AppState::selectClip(const QString &id, bool multi) {
         setSelectedIds(QStringList{id});
     }
 }
+
+void AppState::setPlayneedleParams(const QVariantMap &v) {
+    PlayneedleParams p = PlayneedleParams::fromVariantMap(v);
+    if (!(p == m_playneedleParams)) {
+        m_playneedleParams = p;
+        emit playneedleParamsChanged();
+    }
+}
+
+void AppState::resetPlayneedleParam(const QString &key) {
+    PlayneedleParams defaults;
+    QVariantMap current = m_playneedleParams.toVariantMap();
+    QVariantMap defaultsMap = defaults.toVariantMap();
+    if (current.contains(key) && defaultsMap.contains(key)) {
+        current[key] = defaultsMap[key];
+        setPlayneedleParams(current);
+    }
+}

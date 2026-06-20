@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QQmlContext>
 #include <QFile>
+#include <QIcon>
 
 #include "cpp/Types.h"
 #include "cpp/Track.h"
@@ -21,6 +22,7 @@
 
 int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
+    app.setWindowIcon(QIcon(":/iridescent.ico"));
 
     // Register C++ types with QML
     qRegisterMetaType<MediaType>("MediaType");
@@ -34,6 +36,7 @@ int main(int argc, char *argv[]) {
     qRegisterMetaType<PlayneedleParams>("PlayneedleParams");
     qRegisterMetaType<ThemeColors>("ThemeColors");
     
+    AppState *appState = new AppState();
     qmlRegisterSingletonType<AppState>("Iridescent", 1, 0, "AppState", [](QQmlEngine*, QJSEngine*) -> QObject* { return new AppState(); });
     qmlRegisterSingletonType<SettingsManager>("Iridescent", 1, 0, "Settings", [](QQmlEngine*, QJSEngine*) -> QObject* { return new SettingsManager(); });
     qmlRegisterSingletonType<ThemeManager>("Iridescent", 1, 0, "Theme", [](QQmlEngine*, QJSEngine*) -> QObject* { return new ThemeManager(); });
@@ -43,6 +46,7 @@ int main(int argc, char *argv[]) {
 
     QQmlApplicationEngine engine;
     engine.addImportPath("C:/Qt/6.11.1/msvc2022_64/qml");
+    engine.rootContext()->setContextProperty("appState", appState);
 
     QString exePath = QCoreApplication::applicationDirPath();
     QString qmlPath = exePath + "/../../../src/Editor.qml";

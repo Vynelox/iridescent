@@ -16,10 +16,11 @@ Rectangle {
     color: "transparent"
     
     Rectangle {
+        id: modalRect
         width: 420
         height: root.isMinimized ? 36 : 300
-        x: root.posX + parent.width / 2 - width / 2
-        y: root.posY + parent.height / 2 - height / 2
+        x: parent ? parent.width / 2 - width / 2 : 0
+        y: parent ? parent.height / 2 - height / 2 : 0
         color: "#1a1c24"
         border.color: "#303340"
         border.width: 1
@@ -76,8 +77,8 @@ Rectangle {
                     }
                     onPositionChanged: function(mouse) {
                         if (pressed) {
-                            root.posX += mouse.x - dragOffset.x
-                            root.posY += mouse.y - dragOffset.y
+                            modalRect.x += mouse.x - dragOffset.x
+                            modalRect.y += mouse.y - dragOffset.y
                         }
                     }
                 }

@@ -17,5 +17,6 @@
         <file>components/Waveform.qml</file>
         <file>components/ThumbnailRoll.qml</file>
         <file>components/RollDialog.qml</file>
+        <file>iridescent.ico</file>
     </qresource>
 </RCC>
