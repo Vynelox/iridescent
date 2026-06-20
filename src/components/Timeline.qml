@@ -89,19 +89,25 @@ Rectangle {
                 color: "#13141a"
                 radius: 0
 
-                ColumnLayout {
-                    anchors.fill: parent
+                Item {
+                    id: labelsContainer
+                    width: parent.width
+                    height: 24 + 56 + 56
+                    anchors.centerIn: parent
 
                     Rectangle {
-                        Layout.fillWidth: true
+                        width: parent.width
                         height: 24
                         color: "#1a1c24"
+                        anchors.top: parent.top
                     }
 
                     Rectangle {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                        width: parent.width
+                        height: 56
                         color: "#13141a"
+                        anchors.top: parent.top
+                        anchors.topMargin: 24
 
                         RowLayout {
                             anchors.centerIn: parent
@@ -141,9 +147,11 @@ Rectangle {
                     }
 
                     Rectangle {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                        width: parent.width
+                        height: 56
                         color: "#13141a"
+                        anchors.top: parent.top
+                        anchors.topMargin: 80
 
                         RowLayout {
                             anchors.centerIn: parent
@@ -197,15 +205,18 @@ Rectangle {
                 clip: true
                 color: "#0c0d10"
 
-                ColumnLayout {
-                    anchors.fill: parent
-                    spacing: 0
+                Item {
+                    id: tracksContainer
+                    width: parent.width
+                    height: ruler.height + 56 + 56
+                    anchors.centerIn: parent
 
                     Rectangle {
                         id: ruler
-                        Layout.fillWidth: true
+                        width: parent.width
                         height: 24
                         color: "#1a1c24"
+                        anchors.top: parent.top
 
                         RowLayout {
                             anchors.fill: parent
@@ -244,13 +255,13 @@ Rectangle {
                                 }
                             }
                         }
-
                     }
 
                     Rectangle {
-                        Layout.fillWidth: true
+                        width: parent.width
                         height: 56
                         color: "#0c0d10"
+                        anchors.top: ruler.bottom
 
                         Canvas {
                             anchors.fill: parent
@@ -277,9 +288,11 @@ Rectangle {
                     }
 
                     Rectangle {
-                        Layout.fillWidth: true
+                        width: parent.width
                         height: 56
                         color: "#0c0d10"
+                        anchors.top: ruler.bottom
+                        anchors.topMargin: 56
 
                         Canvas {
                             anchors.fill: parent
@@ -308,7 +321,6 @@ Rectangle {
 
                 MouseArea {
                     anchors.fill: parent
-                    anchors.topMargin: ruler.height
                     property bool isDragging: false
 
                     onPressed: function(mouse) {
@@ -332,17 +344,18 @@ Rectangle {
                 Rectangle {
                     id: playheadLine
                     width: 2
-                    height: tracksArea.height
+                    height: tracksContainer.height
                     color: "#f87171"
                     x: root.playheadPosition
+                    y: tracksContainer.y
                 }
 
                 Rectangle {
                     id: playheadHandle
                     width: 14
-                    height: tracksArea.height
+                    height: tracksContainer.height
                     x: root.playheadPosition - 6
-                    y: 0
+                    y: tracksContainer.y
                     color: "transparent"
 
                     Rectangle {
