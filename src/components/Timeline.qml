@@ -267,7 +267,9 @@ Rectangle {
                         ctx.strokeStyle = "#1a1c24"
                         ctx.lineWidth = 1
 
-                        var trackY = tracksContainer.y
+                        // tracksContainer.y is relative to tracksArea (includes ruler space)
+                        // Canvas is offset by ruler.height, so subtract to get relative position
+                        var trackY = tracksContainer.y - ruler.height
                         var trackH = tracksContainer.height
 
                         // Horizontal lines: above V1, between V1/A1, below A1
