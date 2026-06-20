@@ -7,9 +7,16 @@ Rectangle {
 
     property int playheadPosition: 120
     property real contentX: 0
+    property real targetContentX: 0
 
     onContentXChanged: {
         gridCanvas.requestPaint()
+    }
+
+    NumberAnimation on contentX {
+        id: scrollAnimation
+        duration: 200
+        easing.type: Easing.OutCubic
     }
 
     signal playheadMoved(int position)
@@ -380,7 +387,10 @@ Rectangle {
                     onWheel: function(event) {
                         var delta = event.angleDelta.x !== 0 ? event.angleDelta.x : event.angleDelta.y
                         var maxScroll = Math.min(0, tracksArea.width - 50 * 80)
-                        root.contentX = Math.max(maxScroll, Math.min(0, root.contentX + delta * 0.5))
+                        root.targetContentX = Math.max(maxScroll, Math.min(0, root.targetContentX + delta * 0.5))
+                        scrollAnimation.to = root.targetContentX
+                        scrollAnimation.from = root.contentX
+                        scrollAnimation.restart()
                         event.accepted = true
                     }
                 }
