@@ -214,41 +214,36 @@ Rectangle {
                     anchors.top: parent.top
                     clip: true
 
-                    RowLayout {
-                        x: root.contentX + 4
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        spacing: 0
+                    Repeater {
+                        model: 50
+                        delegate: Rectangle {
+                            x: index * 80 + root.contentX + 4
+                            y: 0
+                            width: 80
+                            height: 24
+                            color: "transparent"
 
-                        Repeater {
-                            model: 50
-                            delegate: Rectangle {
-                                width: 80
-                                height: 24
-                                color: "transparent"
-
-                                Text {
-                                    anchors.left: parent.left
-                                    anchors.bottom: parent.bottom
-                                    anchors.bottomMargin: 4
-                                    text: {
-                                        var totalSec = index * 2
-                                        var m = Math.floor(totalSec / 60)
-                                        var s = totalSec % 60
-                                        return String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0')
-                                    }
-                                    color: "#4a4d5e"
-                                    font.pixelSize: 9
-                                    font.family: "JetBrains Mono, Consolas, monospace"
+                            Text {
+                                anchors.left: parent.left
+                                anchors.bottom: parent.bottom
+                                anchors.bottomMargin: 4
+                                text: {
+                                    var totalSec = index * 2
+                                    var m = Math.floor(totalSec / 60)
+                                    var s = totalSec % 60
+                                    return String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0')
                                 }
+                                color: "#4a4d5e"
+                                font.pixelSize: 9
+                                font.family: "JetBrains Mono, Consolas, monospace"
+                            }
 
-                                Rectangle {
-                                    anchors.right: parent.right
-                                    anchors.bottom: parent.bottom
-                                    width: 1
-                                    height: 6
-                                    color: "#262830"
-                                }
+                            Rectangle {
+                                anchors.right: parent.right
+                                anchors.bottom: parent.bottom
+                                width: 1
+                                height: 6
+                                color: "#262830"
                             }
                         }
                     }
@@ -379,7 +374,8 @@ Rectangle {
                     target: null
                     onWheel: function(event) {
                         var delta = event.angleDelta.x !== 0 ? event.angleDelta.x : event.angleDelta.y
-                        root.contentX = Math.min(0, root.contentX + delta * 0.5)
+                        var maxScroll = Math.min(0, tracksArea.width - 50 * 80)
+                        root.contentX = Math.max(maxScroll, Math.min(0, root.contentX + delta * 0.5))
                         event.accepted = true
                     }
                 }
