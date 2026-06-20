@@ -7,6 +7,8 @@ Window {
     id: mainWindow
     width: 1280
     height: 720
+    minimumWidth: 800
+    minimumHeight: 500
     visible: true
     title: "Iridescent"
     color: "#0c0d10"
@@ -69,7 +71,8 @@ Window {
                             var currentX = vSplitterMouse.mapToItem(topRow, mouse.x, mouse.y).x
                             var delta = currentX - dragStartMouseX
                             var newWidth = dragStartWidth + delta
-                            newWidth = Math.max(160, newWidth)
+                            var maxMediaWidth = topRow.width - vSplitter.width - 4 - 10 - 4 - 40
+                            newWidth = Math.max(160, Math.min(maxMediaWidth, newWidth))
                             mediaPool.width = newWidth
                         }
                     }
