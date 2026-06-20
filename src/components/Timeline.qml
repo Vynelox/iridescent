@@ -212,11 +212,12 @@ Rectangle {
                     height: 24
                     color: "#1a1c24"
                     anchors.top: parent.top
-                    x: root.contentX
+                    clip: true
 
                     RowLayout {
-                        anchors.fill: parent
-                        anchors.leftMargin: 4
+                        x: root.contentX + 4
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
                         spacing: 0
 
                         Repeater {
@@ -294,7 +295,8 @@ Rectangle {
                         ctx.stroke()
 
                         var tickSpacing = 80
-                        for (var tx = 0; tx < width; tx += tickSpacing) {
+                        var gridOffset = 4
+                        for (var tx = gridOffset; tx < width; tx += tickSpacing) {
                             ctx.beginPath()
                             ctx.moveTo(tx, 0)
                             ctx.lineTo(tx, height)
