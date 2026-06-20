@@ -256,65 +256,47 @@ Rectangle {
                     width: parent.width
                     height: 56 + 56
                     anchors.centerIn: parent
+                }
 
-                    Rectangle {
-                        width: parent.width
-                        height: 56
-                        color: "#0c0d10"
-                        anchors.top: parent.top
+                Canvas {
+                    id: gridCanvas
+                    anchors.fill: parent
+                    anchors.topMargin: ruler.height
+                    onPaint: {
+                        var ctx = getContext("2d")
+                        ctx.strokeStyle = "#1a1c24"
+                        ctx.lineWidth = 1
 
-                        Canvas {
-                            anchors.fill: parent
-                            anchors.margins: 3
-                            onPaint: {
-                                var ctx = getContext("2d")
-                                ctx.strokeStyle = "#1a1c24"
-                                ctx.lineWidth = 1
-                                var step = 20
-                                for (var x = 0; x < width; x += step) {
-                                    ctx.beginPath()
-                                    ctx.moveTo(x, 0)
-                                    ctx.lineTo(x, height)
-                                    ctx.stroke()
-                                }
-                                for (var y = 0; y < height; y += step) {
-                                    ctx.beginPath()
-                                    ctx.moveTo(0, y)
-                                    ctx.lineTo(width, y)
-                                    ctx.stroke()
-                                }
-                            }
-                        }
-                    }
+                        var trackY = tracksContainer.y
+                        var trackH = tracksContainer.height
 
-                    Rectangle {
-                        width: parent.width
-                        height: 56
-                        color: "#0c0d10"
-                        anchors.top: parent.top
-                        anchors.topMargin: 56
+                        // Horizontal lines: above V1, between V1/A1, below A1
+                        var lineY1 = trackY
+                        var lineY2 = trackY + 56
+                        var lineY3 = trackY + trackH
 
-                        Canvas {
-                            anchors.fill: parent
-                            anchors.margins: 3
-                            onPaint: {
-                                var ctx = getContext("2d")
-                                ctx.strokeStyle = "#1a1c24"
-                                ctx.lineWidth = 1
-                                var step = 20
-                                for (var x = 0; x < width; x += step) {
-                                    ctx.beginPath()
-                                    ctx.moveTo(x, 0)
-                                    ctx.lineTo(x, height)
-                                    ctx.stroke()
-                                }
-                                for (var y = 0; y < height; y += step) {
-                                    ctx.beginPath()
-                                    ctx.moveTo(0, y)
-                                    ctx.lineTo(width, y)
-                                    ctx.stroke()
-                                }
-                            }
+                        ctx.beginPath()
+                        ctx.moveTo(0, lineY1)
+                        ctx.lineTo(width, lineY1)
+                        ctx.stroke()
+
+                        ctx.beginPath()
+                        ctx.moveTo(0, lineY2)
+                        ctx.lineTo(width, lineY2)
+                        ctx.stroke()
+
+                        ctx.beginPath()
+                        ctx.moveTo(0, lineY3)
+                        ctx.lineTo(width, lineY3)
+                        ctx.stroke()
+
+                        // Vertical lines at each ruler tick (every 80px)
+                        var tickSpacing = 80
+                        for (var x = 0; x < width; x += tickSpacing) {
+                            ctx.beginPath()
+                            ctx.moveTo(x, 0)
+                            ctx.lineTo(x, height)
+                            ctx.stroke()
                         }
                     }
                 }
