@@ -69,7 +69,7 @@ Window {
                             var currentX = vSplitterMouse.mapToItem(topRow, mouse.x, mouse.y).x
                             var delta = currentX - dragStartMouseX
                             var newWidth = dragStartWidth + delta
-                            newWidth = Math.max(160, Math.min(480, newWidth))
+                            newWidth = Math.max(160, newWidth)
                             mediaPool.width = newWidth
                         }
                     }
