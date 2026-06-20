@@ -6,6 +6,7 @@ Rectangle {
     id: root
 
     property int playheadPosition: 120
+    property real contentX: 0
 
     signal playheadMoved(int position)
     signal zoomIn()
@@ -211,6 +212,7 @@ Rectangle {
                     height: 24
                     color: "#1a1c24"
                     anchors.top: parent.top
+                    x: root.contentX
 
                     RowLayout {
                         anchors.fill: parent
@@ -256,23 +258,22 @@ Rectangle {
                     width: parent.width
                     height: 56 + 56
                     anchors.centerIn: parent
+                    x: root.contentX
                 }
 
                 Canvas {
                     id: gridCanvas
                     anchors.fill: parent
                     anchors.topMargin: ruler.height
+                    x: root.contentX
                     onPaint: {
                         var ctx = getContext("2d")
                         ctx.strokeStyle = "#1a1c24"
                         ctx.lineWidth = 1
 
-                        // tracksContainer.y is relative to tracksArea (includes ruler space)
-                        // Canvas is offset by ruler.height, so subtract to get relative position
                         var trackY = tracksContainer.y - ruler.height
                         var trackH = tracksContainer.height
 
-                        // Horizontal lines: above V1, between V1/A1, below A1
                         var lineY1 = trackY
                         var lineY2 = trackY + 56
                         var lineY3 = trackY + trackH
@@ -292,12 +293,11 @@ Rectangle {
                         ctx.lineTo(width, lineY3)
                         ctx.stroke()
 
-                        // Vertical lines at each ruler tick (every 80px)
                         var tickSpacing = 80
-                        for (var x = 0; x < width; x += tickSpacing) {
+                        for (var tx = 0; tx < width; tx += tickSpacing) {
                             ctx.beginPath()
-                            ctx.moveTo(x, 0)
-                            ctx.lineTo(x, height)
+                            ctx.moveTo(tx, 0)
+                            ctx.lineTo(tx, height)
                             ctx.stroke()
                         }
                     }
@@ -310,13 +310,13 @@ Rectangle {
 
                     onPressed: function(mouse) {
                         isDragging = true
-                        var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x
+                        var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x + root.contentX
                         root.playheadPosition = Math.max(0, globalX)
                         root.playheadMoved(root.playheadPosition)
                     }
                     onPositionChanged: function(mouse) {
                         if (isDragging && pressedButtons === Qt.LeftButton) {
-                            var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x
+                            var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x + root.contentX
                             root.playheadPosition = Math.max(0, globalX)
                             root.playheadMoved(root.playheadPosition)
                         }
@@ -331,14 +331,14 @@ Rectangle {
                     width: 2
                     height: tracksArea.height
                     color: "#f87171"
-                    x: root.playheadPosition
+                    x: root.playheadPosition + root.contentX
                 }
 
                 Rectangle {
                     id: playheadHandle
                     width: 14
                     height: tracksArea.height
-                    x: root.playheadPosition - 6
+                    x: root.playheadPosition + root.contentX - 6
                     y: 0
                     color: "transparent"
 
@@ -359,17 +359,26 @@ Rectangle {
                         anchors.rightMargin: -6
 
                         onPressed: function(mouse) {
-                            var globalX = playheadMouseArea.mapToItem(tracksArea, mouse.x, mouse.y).x
+                            var globalX = playheadMouseArea.mapToItem(tracksArea, mouse.x, mouse.y).x + root.contentX
                             root.playheadPosition = Math.max(0, globalX)
                             root.playheadMoved(root.playheadPosition)
                         }
                         onPositionChanged: function(mouse) {
                             if (pressedButtons === Qt.LeftButton) {
-                                var globalX = playheadMouseArea.mapToItem(tracksArea, mouse.x, mouse.y).x
+                                var globalX = playheadMouseArea.mapToItem(tracksArea, mouse.x, mouse.y).x + root.contentX
                                 root.playheadPosition = Math.max(0, globalX)
                                 root.playheadMoved(root.playheadPosition)
                             }
                         }
+                    }
+                }
+
+                WheelHandler {
+                    target: null
+                    onWheel: function(event) {
+                        var delta = event.angleDelta.x !== 0 ? event.angleDelta.x : event.angleDelta.y
+                        root.contentX = Math.min(0, root.contentX + delta * 0.5)
+                        event.accepted = true
                     }
                 }
             }
