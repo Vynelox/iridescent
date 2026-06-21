@@ -76,7 +76,17 @@ Rectangle {
                 }
 
                 Text {
-                    text: "00:00:00:00"
+                    text: {
+                        var totalSec = root.playheadPosition / 40
+                        var h = Math.floor(totalSec / 3600)
+                        var m = Math.floor((totalSec % 3600) / 60)
+                        var s = Math.floor(totalSec % 60)
+                        var f = Math.floor((totalSec - Math.floor(totalSec)) * 30)
+                        return String(h).padStart(2, '0') + ":" +
+                               String(m).padStart(2, '0') + ":" +
+                               String(s).padStart(2, '0') + ":" +
+                               String(f).padStart(2, '0')
+                    }
                     color: "#8b8fa8"
                     font.pixelSize: 11
                     font.family: "JetBrains Mono, Consolas, monospace"
