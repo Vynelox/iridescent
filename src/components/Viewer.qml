@@ -110,13 +110,6 @@ Rectangle {
                     height: 16
                     color: "#262830"
                 }
-
-                Text {
-                    text: "00:00:00:00"
-                    color: "#8b8fa8"
-                    font.pixelSize: 11
-                    font.family: "JetBrains Mono, Consolas, monospace"
-                }
             }
         }
     }
