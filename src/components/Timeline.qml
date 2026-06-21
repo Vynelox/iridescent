@@ -319,13 +319,13 @@ Rectangle {
 
                     onPressed: function(mouse) {
                         isDragging = true
-                        var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x + root.contentX
+                        var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x - root.contentX
                         root.playheadPosition = Math.max(0, globalX)
                         root.playheadMoved(root.playheadPosition)
                     }
                     onPositionChanged: function(mouse) {
                         if (isDragging && pressedButtons === Qt.LeftButton) {
-                            var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x + root.contentX
+                            var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x - root.contentX
                             root.playheadPosition = Math.max(0, globalX)
                             root.playheadMoved(root.playheadPosition)
                         }
@@ -366,18 +366,20 @@ Rectangle {
                         anchors.fill: parent
                         anchors.leftMargin: -6
                         anchors.rightMargin: -6
+                        property bool isDragging: false
 
                         onPressed: function(mouse) {
-                            var globalX = playheadMouseArea.mapToItem(tracksArea, mouse.x, mouse.y).x + root.contentX
-                            root.playheadPosition = Math.max(0, globalX)
-                            root.playheadMoved(root.playheadPosition)
+                            isDragging = true
                         }
                         onPositionChanged: function(mouse) {
-                            if (pressedButtons === Qt.LeftButton) {
-                                var globalX = playheadMouseArea.mapToItem(tracksArea, mouse.x, mouse.y).x + root.contentX
+                            if (isDragging && pressedButtons === Qt.LeftButton) {
+                                var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x + root.contentX
                                 root.playheadPosition = Math.max(0, globalX)
                                 root.playheadMoved(root.playheadPosition)
                             }
+                        }
+                        onReleased: function() {
+                            isDragging = false
                         }
                     }
                 }
