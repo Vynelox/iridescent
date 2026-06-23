@@ -14,9 +14,33 @@ Window {
     color: "#0c0d10"
     flags: Qt.FramelessWindowHint
 
+    // ─── Window dimension memory for maximize/restore ───
+    property real prevX: 0
+    property real prevY: 0
+    property real prevWidth: 1280
+    property real prevHeight: 720
+    property bool isMaximized: false
+
     // ─── C++ Singletons ───
     // Settings { id: settings }
     // Theme { id: theme }
+
+    function toggleMaximize() {
+        if (isMaximized) {
+            mainWindow.x = prevX
+            mainWindow.y = prevY
+            mainWindow.width = prevWidth
+            mainWindow.height = prevHeight
+            isMaximized = false
+        } else {
+            prevX = mainWindow.x
+            prevY = mainWindow.y
+            prevWidth = mainWindow.width
+            prevHeight = mainWindow.height
+            mainWindow.showMaximized()
+            isMaximized = true
+        }
+    }
 
     function activateStylesModal() { styleModalLoader.active = true; }
     function activateSettingsModal() { settingsLoader.active = true; }
@@ -33,7 +57,7 @@ Window {
             anchors.left: parent.left
             anchors.right: parent.right
             onMinimizeClicked: mainWindow.showMinimized()
-            onMaximizeClicked: mainWindow.showMaximized()
+            onMaximizeClicked: mainWindow.toggleMaximize()
             onCloseClicked: mainWindow.close()
         }
 
