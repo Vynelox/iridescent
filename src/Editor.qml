@@ -12,6 +12,7 @@ Window {
     visible: true
     title: "Iridescent"
     color: "#0c0d10"
+    flags: Qt.FramelessWindowHint
 
     // ─── C++ Singletons ───
     // Settings { id: settings }
@@ -25,10 +26,21 @@ Window {
         anchors.fill: parent
         color: "#0c0d10"
 
+        // ─── Custom Title Bar ───
+        TitleBar {
+            id: titleBar
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            onMinimizeClicked: mainWindow.showMinimized()
+            onMaximizeClicked: mainWindow.showMaximized()
+            onCloseClicked: mainWindow.close()
+        }
+
         // ─── Workspace ───
         Rectangle {
             id: workspace
-            anchors.top: parent.top
+            anchors.top: titleBar.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
