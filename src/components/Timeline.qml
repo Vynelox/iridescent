@@ -9,13 +9,13 @@ Rectangle {
     property real contentX: 0
     property real targetContentX: 0
 
-    onContentXChanged: {
+    onContentXChanged: {// when the x coordinate of the timeline camera changes
         gridCanvas.requestPaint()
     }
 
     NumberAnimation on contentX {
         id: scrollAnimation
-        duration: 200
+        duration: 200 //PUT THIS IN THE SETTINGS!!!! (scroll smoothness)
         easing.type: Easing.OutCubic
     }
 
@@ -25,21 +25,22 @@ Rectangle {
 
     color: "#0c0d10"
 
-    ColumnLayout {
+    ColumnLayout { //flex direction column (timeline header, timeline tracks)
         anchors.fill: parent
         anchors.margins: 0
 
-        Rectangle {
+        Rectangle {//timeline background (the visual rectangle for the columnlayout)
             Layout.fillWidth: true
             height: 36
             color: "#13141a"
             radius: 0
 
-            RowLayout {
+            RowLayout {//timeline header
                 anchors.fill: parent
                 anchors.leftMargin: 12
                 anchors.rightMargin: 12
                 spacing: 10
+                //[GUI SCALE] add a height
 
                 Text {
                     text: "Timeline"
@@ -52,30 +53,26 @@ Rectangle {
 
                 Rectangle { Layout.fillWidth: true }
 
-                RoundButton {
+                RoundButton { //minus button (zoom out)
                     text: "-"
                     flat: true
                     palette.button: "transparent"
                     palette.buttonText: "#4a4d5e"
-                    font.pixelSize: 14
+                    font.pixelSize: 14 //GUI SCALE
                     onClicked: root.zoomOut()
                 }
-                RoundButton {
+                RoundButton { //plus button (zoom in)
                     text: "+"
                     flat: true
                     palette.button: "transparent"
                     palette.buttonText: "#4a4d5e"
-                    font.pixelSize: 14
+                    font.pixelSize: 14 //GUI SCALE
                     onClicked: root.zoomIn()
                 }
 
-                Rectangle {
-                    width: 1
-                    height: 14
-                    color: "#262830"
-                }
+                Rectangle { Layout.fillWidth: true }
 
-                Text {
+                Text { //timecode
                     text: {
                         var totalSec = root.playheadPosition / 40
                         var h = Math.floor(totalSec / 3600)
@@ -88,30 +85,27 @@ Rectangle {
                                String(f).padStart(2, '0')
                     }
                     color: "#8b8fa8"
-                    font.pixelSize: 11
+                    font.pixelSize: 11 //GUI SCALE
                     font.family: "JetBrains Mono, Consolas, monospace"
                 }
             }
-        }
+        }//end of timeline header
 
-        Rectangle {
-            Layout.fillWidth: true
-            height: 1
-            color: "#262830"
-        }
 
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            spacing: 0
+        RowLayout {//timeline tracks
+            //Layout.fillWidth: true
+            //Layout.fillHeight: true
+            anchors.fill: parent //choose between this and the above two lines
+            //hides/shows the timeline header bar
+            spacing: 0 //default spacing between every child element
 
-            Rectangle {
-                width: 60
+            Rectangle {//media tracks sidebar
+                width: 60 //GUI SCALE
                 Layout.fillHeight: true
                 color: "#13141a"
                 radius: 0
 
-                Rectangle {
+                Rectangle {//the grey filler rectangle at the top of the sidebar (the ruler)
                     id: sidebarRuler
                     width: parent.width
                     height: 24
@@ -119,11 +113,14 @@ Rectangle {
                     anchors.top: parent.top
                 }
 
-                Item {
+                Item {//contains all the labels of the media tracks sidebar (v1, a1, etc)
                     id: labelsContainer
                     width: parent.width
-                    height: 56 + 56
-                    anchors.centerIn: parent
+                    height: 56 + 56 //note: this will change depending on the number of tracks, which will be added later
+                    anchors.centerIn: parent //does the same thing as
+                    //anchors.verticalCenter: parent.verticalCenter
+                    //anchors.horizontalCenter: parent.horizontalCenter
+
 
                     Rectangle {
                         width: parent.width
@@ -131,18 +128,18 @@ Rectangle {
                         color: "#13141a"
                         anchors.top: parent.top
 
-                        RowLayout {
+                        RowLayout {//the v1 next to the video track icon
                             anchors.centerIn: parent
                             spacing: 5
 
-                            Text {
+                            Text {//v1 text
                                 text: "V1"
                                 color: "#38bdf8"
                                 font.pixelSize: 11
                                 font.bold: true
                                 font.family: "Inter, Segoe UI"
                             }
-                            Rectangle {
+                            Rectangle {//v1 icon
                                 width: 20
                                 height: 18
                                 color: "transparent"
@@ -175,18 +172,18 @@ Rectangle {
                         anchors.top: parent.top
                         anchors.topMargin: 56
 
-                        RowLayout {
+                        RowLayout {//the a1 next to the audio track icon
                             anchors.centerIn: parent
                             spacing: 5
 
-                            Text {
+                            Text {//a1 text
                                 text: "A1"
                                 color: "#34d399"
                                 font.pixelSize: 11
                                 font.bold: true
                                 font.family: "Inter, Segoe UI"
                             }
-                            Rectangle {
+                            Rectangle {//a1 icon
                                 width: 20
                                 height: 18
                                 color: "transparent"
@@ -220,7 +217,7 @@ Rectangle {
                 }
             }
 
-            Rectangle {
+            Rectangle {//media tracks. next element in rowlayout after the sidebar.
                 id: tracksArea
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -235,7 +232,7 @@ Rectangle {
                     anchors.top: parent.top
                     clip: true
 
-                    Repeater {
+                    Repeater {//potentially use this for media tracks?
                         model: 50
                         delegate: Rectangle {
                             x: index * 80 + root.contentX + 4
@@ -322,7 +319,7 @@ Rectangle {
                     }
                 }
 
-                MouseArea {
+                MouseArea { //for dragging the playneedle
                     anchors.fill: parent
                     anchors.topMargin: ruler.height
                     property bool isDragging: false
@@ -345,7 +342,7 @@ Rectangle {
                     }
                 }
 
-                Rectangle {
+                Rectangle {//playneedle
                     id: playheadLine
                     width: 2
                     height: tracksArea.height
@@ -380,10 +377,13 @@ Rectangle {
 
                         onPressed: function(mouse) {
                             isDragging = true
+                            var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x - root.contentX
+                            root.playheadPosition = Math.max(0, globalX)
+                            root.playheadMoved(root.playheadPosition)
                         }
                         onPositionChanged: function(mouse) {
                             if (isDragging && pressedButtons === Qt.LeftButton) {
-                                var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x + root.contentX
+                                var globalX = mapToItem(tracksArea, mouse.x, mouse.y).x - root.contentX
                                 root.playheadPosition = Math.max(0, globalX)
                                 root.playheadMoved(root.playheadPosition)
                             }
@@ -409,4 +409,5 @@ Rectangle {
             }
         }
     }
+    
 }
