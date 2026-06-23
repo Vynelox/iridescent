@@ -12,7 +12,7 @@ Window {
     visible: true
     title: "Iridescent"
     color: "#0c0d10"
-    flags: Qt.FramelessWindowHint
+    flags: Qt.FramelessWindowHint | Qt.Window
 
     // ─── Window dimension memory for maximize/restore ───
     property real prevX: 0
