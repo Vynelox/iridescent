@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Window
 import "components"
 
 Window {
@@ -21,23 +22,48 @@ Window {
     property real prevHeight: 720
     property bool isMaximized: false
 
+    // ─── Maximize/Restore Animations ───
+    NumberAnimation { id: animToX; target: mainWindow; property: "x"; duration: 250; easing.type: Easing.OutCubic }
+    NumberAnimation { id: animToY; target: mainWindow; property: "y"; duration: 250; easing.type: Easing.OutCubic }
+    NumberAnimation { id: animToWidth; target: mainWindow; property: "width"; duration: 250; easing.type: Easing.OutCubic }
+    NumberAnimation { id: animToHeight; target: mainWindow; property: "height"; duration: 250; easing.type: Easing.OutCubic }
+
     // ─── C++ Singletons ───
     // Settings { id: settings }
     // Theme { id: theme }
 
     function toggleMaximize() {
         if (isMaximized) {
-            mainWindow.x = prevX
-            mainWindow.y = prevY
-            mainWindow.width = prevWidth
-            mainWindow.height = prevHeight
+            animToX.to = prevX
+            animToY.to = prevY
+            animToWidth.to = prevWidth
+            animToHeight.to = prevHeight
+            animToX.from = mainWindow.x
+            animToY.from = mainWindow.y
+            animToWidth.from = mainWindow.width
+            animToHeight.from = mainWindow.height
+            animToX.restart()
+            animToY.restart()
+            animToWidth.restart()
+            animToHeight.restart()
             isMaximized = false
         } else {
             prevX = mainWindow.x
             prevY = mainWindow.y
             prevWidth = mainWindow.width
             prevHeight = mainWindow.height
-            mainWindow.showMaximized()
+            animToX.from = mainWindow.x
+            animToY.from = mainWindow.y
+            animToWidth.from = mainWindow.width
+            animToHeight.from = mainWindow.height
+            animToX.to = primaryScreenX
+            animToY.to = primaryScreenY
+            animToWidth.to = primaryScreenWidth
+            animToHeight.to = primaryScreenHeight
+            animToX.restart()
+            animToY.restart()
+            animToWidth.restart()
+            animToHeight.restart()
             isMaximized = true
         }
     }
@@ -57,7 +83,7 @@ Window {
             anchors.left: parent.left
             anchors.right: parent.right
             onMinimizeClicked: mainWindow.showMinimized()
-            onMaximizeClicked: mainWindow.toggleMaximize()
+            onMaximizeClicked: mainWindow.showMaximized()
             onCloseClicked: mainWindow.close()
         }
 

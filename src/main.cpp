@@ -55,6 +55,13 @@ int main(int argc, char *argv[]) {
     engine.addImportPath("C:/Qt/6.11.1/msvc2022_64/qml");
     engine.rootContext()->setContextProperty("appState", appState);
 
+    // Provide primary screen geometry to QML
+    QRect primaryScreenGeometry = app.primaryScreen()->geometry();
+    engine.rootContext()->setContextProperty("primaryScreenX", primaryScreenGeometry.x());
+    engine.rootContext()->setContextProperty("primaryScreenY", primaryScreenGeometry.y());
+    engine.rootContext()->setContextProperty("primaryScreenWidth", primaryScreenGeometry.width());
+    engine.rootContext()->setContextProperty("primaryScreenHeight", primaryScreenGeometry.height());
+
     QString exePath = QCoreApplication::applicationDirPath();
     QString qmlPath = exePath + "/../../../src/Editor.qml";
     
