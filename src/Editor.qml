@@ -47,7 +47,7 @@ Window {
             animToWidth.restart()
             animToHeight.restart()
             isMaximized = false
-        } else {
+        } else { //if it's not already maximized
             prevX = mainWindow.x
             prevY = mainWindow.y
             prevWidth = mainWindow.width
