@@ -56,10 +56,10 @@ Window {
             animToY.from = mainWindow.y
             animToWidth.from = mainWindow.width
             animToHeight.from = mainWindow.height
-            animToX.to = primaryScreenX
-            animToY.to = primaryScreenY
-            animToWidth.to = primaryScreenWidth
-            animToHeight.to = primaryScreenHeight
+            animToX.to = 0
+            animToY.to = 0
+            animToWidth.to = Screen.width
+            animToHeight.to = Screen.height
             animToX.restart()
             animToY.restart()
             animToWidth.restart()
@@ -83,7 +83,7 @@ Window {
             anchors.left: parent.left
             anchors.right: parent.right
             onMinimizeClicked: mainWindow.showMinimized()
-            onMaximizeClicked: mainWindow.showMaximized()
+            onMaximizeClicked: toggleMaximize()
             onCloseClicked: mainWindow.close()
         }
 
